@@ -56,7 +56,6 @@ SK Hynix JDP 환경성과 기여에 따른 Reward 제공
 - 낙전 처리?
 - 보안관련 처리 필요
 
-### Reference 
 ### Reference
 
 - Remix - ethereum smart contract IDE [https://remix.ethereum.org/](https://remix.ethereum.org/)
