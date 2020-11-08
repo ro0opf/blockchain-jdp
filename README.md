@@ -13,7 +13,9 @@ SK Hynix JDP 환경성과 기여에 따른 Reward 제공
 - ~ 11/16 : 문서정리
 - ~ 11/17 : 
 
-# [설계 Draft](https://github.com/ro0opf/blockchain-jdp/blob/dev/blockchain_archi_v1.pptx)
+
+## [설계 Draft](https://github.com/ro0opf/blockchain-jdp/blob/dev/blockchain_archi_v1.pptx)
+
 
 # 기능 요구사항
 - 사전 준비 (화면 필요없을 것으로 보임) - API 는 만드는 것이 편할 것으로 보임
