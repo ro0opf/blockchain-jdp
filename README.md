@@ -41,20 +41,34 @@ SK Hynix JDP 환경성과 기여에 따른 Reward 제공
 
 ### ERC20 token contract
 
-- [https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts/token/ERC20](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts/token/ERC20) : 거의 수정하지 않고 사용할 예정임
+- [https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts/token/ERC20](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts/token/ERC20) : ERC20 Interface가 표준이라 거의 수정하지 않고 사용할 예정임
 - ERC20 Token 발행
 - token 전송
+- Interface (표준 API중 사용할 함수)
+    - function balanceOf(address _who) public view returns (uint256);
+    - function transfer(address _to, uint256 _value) public returns (bool);
 
 ### voting contract
 
 - voting event 생성
     - event id
     - target company list (address)
-    - 기간
-- voting 처리
+- reward 받기
+- voting 수행
+    - event id
+    - duration
 - voting 종료 처리 후 reward 분배
 - 낙전 처리?
 - 보안관련 처리 필요
+    - 연산에 보안적으로 검증된 Library 사용
+    - [https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol)
+- Interface
+    - fuction createEvent(uint32 eventId, address[] targetAddress) public returns (address)
+    - fuction startVoting(uint32 eventId, uint duration) public
+    - fuction stopVoting(uint32 eventId, uint duration) public
+    - function voting(address target, uint32 token) public
+    - fuction fundReward(uint256 Reward) public (uint256)
+    - fuction withdraw() public returns (uint256)
 
 ### Reference
 
