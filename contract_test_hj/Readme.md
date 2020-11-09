@@ -29,8 +29,8 @@
 
  1) sample : voting status
 
-Voting.deployed().then(function(contractInstance) {contractInstance.totalVotesFor.call('Nick').then(function(v) {console.log(v.toNumber())})})
+>> Voting.deployed().then(function(contractInstance) {contractInstance.totalVotesFor.call('Nick').then(function(v) {console.log(v.toNumber())})})
 
  2) sample : voting 
 
-truffle(default)> Voting.deployed().then(function(contractInstance) {contractInstance.voteForCandidate('Nick').then(function(v) {console.log(v)})})
+>> truffle(default)> Voting.deployed().then(function(contractInstance) {contractInstance.voteForCandidate('Nick').then(function(v) {console.log(v)})})
