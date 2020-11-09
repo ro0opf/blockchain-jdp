@@ -19,8 +19,8 @@
 >> ganachi-cli
 
 [Deploy Contract]
- (Compile contract ) >> truffle compile
- (Deploy  contract ) >> truffle migrate
+>> truffle compile  (Compile contract ) 
+>> truffle migrate  (Deploy  contract ) 
 
 
 [Console Test]
