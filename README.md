@@ -1,5 +1,5 @@
 # blockchain-jdp
-SK Hynix JDP 환경성과 기여에 따른 Reward 제공
+JDP 환경성과 기여에 따른 Reward 제공
 ## [Overall 설계 Draft](https://github.com/ro0opf/blockchain-jdp/blob/dev/blockchain_archi_v1.pptx)
 - 백엔드 API
 - [프론트엔드 화면 설계](https://www.figma.com/file/eyn8YZSdDfVr5oc6Y61Sz5/Blockchain-SK?node-id=0%3A1)
@@ -23,7 +23,6 @@ SK Hynix JDP 환경성과 기여에 따른 Reward 제공
     - 관리자 로그인
     - 평가 이벤트 생성
         - 평가 대상자 정보
-        - 평가 기간
         - 평가자 ?( 제한이 필요할까?)
     - 평가종료 (평가기간 이후) → 리워드 자동 계산 및 분배
     - 낙전 처리 ?
@@ -57,7 +56,6 @@ SK Hynix JDP 환경성과 기여에 따른 Reward 제공
 - reward 받기
 - voting 수행
     - event id
-    - duration
 - voting 종료 처리 후 reward 분배
 - 낙전 처리?
 - 보안관련 처리 필요
