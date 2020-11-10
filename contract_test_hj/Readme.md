@@ -34,3 +34,7 @@
  2) sample : voting 
 
 >> truffle(default)> Voting.deployed().then(function(contractInstance) {contractInstance.voteForCandidate('Nick').then(function(v) {console.log(v)})})
+
+[Node JS Contract Reference]
+https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html
+https://opentutorials.org/course/2869/20680
