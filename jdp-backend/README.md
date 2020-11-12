@@ -6,6 +6,8 @@ jdp contest
 
 Get started developing...
 
+make .env and copy .env_sample to .env 
+
 ```shell
 # install deps
 npm install
