@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:10.2.21
+    container_name: jdp_mariadb
+    hostname: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: jdp-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./jdp-data:/var/lib/mysql
