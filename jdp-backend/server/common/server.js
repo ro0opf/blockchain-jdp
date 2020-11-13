@@ -8,6 +8,9 @@ import l from './logger';
 import * as OpenApiValidator from 'express-openapi-validator';
 import errorHandler from '../api/middlewares/error.handler';
 
+import connectDB from './db';
+import cors from 'cors';
+
 const app = new Express();
 
 export default class ExpressServer {
@@ -30,6 +33,7 @@ export default class ExpressServer {
     );
     app.use(bodyParser.text({ limit: process.env.REQUEST_LIMIT || '100kb' }));
     app.use(cookieParser(process.env.SESSION_SECRET));
+    app.use(cors());
     app.use(Express.static(`${root}/public`));
 
     app.use(process.env.OPENAPI_SPEC || '/spec', Express.static(apiSpec));
@@ -40,6 +44,7 @@ export default class ExpressServer {
         ignorePaths: /.*\/spec(\/|$)/,
       })
     );
+    connectDB().then();
   }
 
   router(routes) {
