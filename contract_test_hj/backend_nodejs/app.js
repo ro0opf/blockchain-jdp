@@ -597,13 +597,10 @@ var jsonInterface =
 
 
 
-
-
-
 // Call contract
 
 var v_cntrct = new web3.eth.Contract(jsonInterface
-	, '0x21766a9babFC62e254AfCa190A45773C90B4C441' // Contract Address(=event ID)
+	, '0xD9e20E4D2a47DAE025bf64E42B2eC4d769AF7639' // Contract Address(=event ID)
 );
 
 
@@ -611,7 +608,7 @@ var v_cntrct = new web3.eth.Contract(jsonInterface
 app.get('/', (req, res) => {
 	console.log(v_cntrct.methods);
 
-	var acnt = "0xC248cC9f59AB7eb4FC2C43C2186437711c295a57";
+	var acnt = "0x805feB1cE4BCf1EA7D1C5EB0c7f3D675Fb503898";
 	
 	/*
 	v_cntrct.methods.candidateList.call().then( data => {
@@ -660,9 +657,6 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res) => {
 	
-
-
-
 	var u_id = req.body.user_id;
 	var u_pwd = req.body.user_pwd;
 
@@ -768,29 +762,27 @@ app.get('/balance', (req, res) => {
 	var query = url.parse(req.url, true).query;
 	var u_id = query.id;
 
-	// DB QUERY: GET ACCOUNT ID
-	var acnt_id = "test_eth_id";
+	console.log('balance');
+	console.log(query);
 
-	connection.query('SELECT * FROM user_acnt WHERE voter_id=\'' + u_id', function (err, rows, fields) {
+	// DB QUERY: GET ACCOUNT ID
+	var acnt_id = "test_eth_id123";
+
+	connection.query('SELECT * FROM user_acnt WHERE voter_id=\'' + u_id+ '\'', function (err, rows, fields) {
 		if (!err) {
 	            if(rows[0] != undefined) {
 
 			    acnt_id = rows[0]['eth_id'];
-
+			    console.log(acnt_id);
 			    // Call Contract
-			    var balance = 1000;
+			    //var balance = 1000;
 
-			    v_cntrct.methods.balanceOf(acnt_id).call(
-					{from : acnt_id}, // Account
-					function(error, result) {
+			    // var res_json = new Object();
+			    // res_json.balance = balance;
 
-						var res_json = new Object();
-			    			res_json.balance = result;
-
-					        res.send(res_json);
-			
-					}
-			    );
+          	            // res.send(res_json);
+   		
+			    v_cntrct.methods.balanceOf(acnt_id).call().then(result => console.log(result)).catch(err => {console.log(err)});
 
 		    }
 		    else {
@@ -809,7 +801,7 @@ app.get('/balance', (req, res) => {
 
 app.get('/vote', (req, res) => {
 	var query = url.parse(req.url, true).query;
-	var user_id = query.id;
+	var u_id = query.id;
 	var vote_c = query.company;
 	var event_id = query.event_id;
 	var vote_amt = query.vote_amt;
@@ -817,7 +809,7 @@ app.get('/vote', (req, res) => {
 	// DB QUERY: GET ACCOUNT ID
 	var acnt_id = "test_eth_id";
 
-	connection.query('SELECT * FROM user_acnt WHERE voter_id=\'' + u_id', function (err, rows, fields) {
+	connection.query('SELECT * FROM user_acnt WHERE voter_id=\'' + u_id+ '\'', function (err, rows, fields) {
 		if (!err) {
 	            if(rows[0] != undefined) {
 
@@ -938,27 +930,47 @@ app.get('/voting', (req, res) => {
 	
 	var vote_list = [];
 	// Contract call
+	console.log('/voting');
+	console.log(query);
 
-        var r_length = 2;
+	connection.query('SELECT * FROM vote_list WHERE st_dt >=\'' + st_dt + '\' AND end_dt <=\'' + end_dt + '\'', function (err, rows, fields) {
+		if (!err) {
+	            if(rows[0] != undefined) {
 
-        var res_json = new Object();
-        var a_vote_info = new Array();
+			    var r_length = rows.length;
+			    var res_json = new Object();
+			    var vote_info_dtl = new Array();
 
-        for(var i=0; i<r_length; i++){
-                var vote_info = new Object();
-                vote_info.event_id = "SK";
-                vote_info.voted_nm = 1000;
-                vote_info.st_dt = "2020-10-01";
-                vote_info.end_dt = "2020-10-31";
+			    for(var i=0; i<r_length; i++){
+				    var vote_info = new Object();
 
-                a_vote_info.push(vote_info);
-        }
+			            vote_info.event_id =rows[i]['event_id'];
+			            vote_info.event_nm = rows[i]['event_nm'];
+			            vote_info.st_dt = rows[i]['st_dt'];
+			            vote_info.end_dt = rows[i]['end_dt'];
+				    vote_info.vote_status = rows[i]['vote_status'];
 
-        res_json.voting = a_vote_info;
+				    vote_info_dtl.push(vote_info);
+			    }
+			   
+                            res_json.voting_detail = vote_info_dtl;
+			    res.send(res_json);
 
-        console.log(res_json);
+		    }
+		    else {
+			    var vote_info_dtl = new Array();
+			    var res_json = new Object();
+			    res_json.voting_detail = vote_info_dtl;
+			    
+			    console.log('NO EVENT ERROR : ');
+			    res.send(res_json);
+		    }
+		} else {
+		    console.log('EVENT_ID ERROR : ' + err);
+		    res.send('EVENT_ID ERROR');
+		}
+    	});
 
-        res.send(res_json);
 
 });
 
@@ -967,30 +979,41 @@ app.get('/voting', (req, res) => {
 app.get('/voting/detail', (req, res) => {
 	
 	var query = url.parse(req.url, true).query;
-	
+	console.log('detail');
+	console.log(query);
 	var event_id = query.event_id;
 
-	var vote_list_dtl = [];
-	// Contract Call
+	connection.query('SELECT e.subject, ua.voter_img_url, ua.voter_name, e.voted_amt FROM event_com e, user_acnt ua WHERE e.event_id=\'' + event_id + '\' AND e.voter_id = ua.voter_id', function (err, rows, fields) {
+		if (!err) {
+	            if(rows[0] != undefined) {
 
-	var r_length = 2;
-	var res_json = new Object();
-	var vote_info_dtl = new Array();
+			    var r_length = rows.length;
+			    var res_json = new Object();
+			    var vote_info_dtl = new Array();
 
+			    for(var i=0; i<r_length; i++){
+				    var vote_info = new Object();
 
-	for(var i=0; i<r_length; i++){
-		var vote_info = new Object();
-		vote_info.company = "SK";
-		vote_info.voted_amt = 200000;
-		vote_info.subject = "COMPANY DESCRIPTION";
+			            vote_info.subject =rows[i]['subject'];
+			            vote_info.company = rows[i]['voter_name'];
+			            vote_info.user_img = rows[i]['voter_img_url'];
+			            vote_info.voted_amt = rows[i]['voted_amt'];
 
-		vote_info_dtl.push(vote_info);
-	}
+				    vote_info_dtl.push(vote_info);
+			    }
+			   
+                            res_json.voting_detail = vote_info_dtl;
+			    res.send(res_json);
 
-	res_json.voting_detail = vote_info_dtl;
+		    }
+		    else {
+			    res.send('EVENT_ID ERROR');
+		    }
+		} else {
+		    console.log('EVENT_ID ERROR : ' + err);
+		    res.send('EVENT_ID ERROR');
+		}
+    	});
 
-	console.log(res_json);
-
-	res.send(res_json);
 
 });
