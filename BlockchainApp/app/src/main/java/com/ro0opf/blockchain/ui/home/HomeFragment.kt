@@ -1,7 +1,6 @@
-package com.ro0opf.blockchain.screen.ui.home
+package com.ro0opf.blockchain.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ro0opf.blockchain.R
 import com.ro0opf.blockchain.databinding.FragmentHomeBinding
-import com.ro0opf.blockchain.ui.home.VoteDialogFragment
-import com.ro0opf.blockchain.ui.home.VoteInfoListAdapter
 
 class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
@@ -28,15 +25,23 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
+        setVariable()
         setOnClickListner()
         setVoteInfoRcv(binding.rcvVoteinfo)
         setObserve()
+
+        homeViewModel.getBalance()
+
         return binding.root
+    }
+
+    private fun setVariable() {
+        binding.lifecycleOwner = this
+        binding.homeViewModel = homeViewModel
     }
 
     private fun setObserve() {
         homeViewModel.voteInfos.observe(viewLifecycleOwner, {
-            Log.e("123123","ttttt")
             voteInfoListAdapter.submitList(it)
         })
     }

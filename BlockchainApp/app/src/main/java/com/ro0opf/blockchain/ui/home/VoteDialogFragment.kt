@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.ro0opf.blockchain.R
 import com.ro0opf.blockchain.databinding.DialogVoteBinding
-import com.ro0opf.blockchain.screen.ui.home.HomeViewModel
 
 class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
     AdapterView.OnItemSelectedListener {

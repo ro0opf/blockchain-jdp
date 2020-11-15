@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="homeViewModel"
+            type="com.ro0opf.blockchain.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +67,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="ESV TOKEN\n198"
+            android:text="@{`ESV TOKEN\n` + homeViewModel.balance.toString()}"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="32sp"

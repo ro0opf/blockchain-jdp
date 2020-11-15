@@ -1,4 +1,4 @@
-package com.ro0opf.blockchain.screen.ui
+package com.ro0opf.blockchain.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,10 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.ro0opf.blockchain.R
 import com.ro0opf.blockchain.databinding.ActivityMainBinding
-import com.ro0opf.blockchain.screen.ui.dashboard.HistoryFragment
-import com.ro0opf.blockchain.screen.ui.home.HomeFragment
-import com.ro0opf.blockchain.screen.ui.notifications.CalendarFragment
 import com.ro0opf.blockchain.ui.account.AccountFragment
+import com.ro0opf.blockchain.ui.dashboard.HistoryFragment
+import com.ro0opf.blockchain.ui.home.HomeFragment
+import com.ro0opf.blockchain.ui.notifications.CalendarFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

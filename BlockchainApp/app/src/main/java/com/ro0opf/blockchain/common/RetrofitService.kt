@@ -11,7 +11,7 @@ object RetrofitService {
 
     private val retrofit =
         Retrofit.Builder()
-            .baseUrl("http://jsonplaceholder.typicode.com/")
+            .baseUrl("http://116.123.86.186:9999/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 }

@@ -6,5 +6,5 @@ import retrofit2.http.Path
 
 interface TestAPI {
     @GET("/posts/{userId}")
-    suspend fun getTest(@Path("userId") userId : Int) : Response<Test>
+    suspend fun getTest(@Path("userId") userId : Int) : Response<User>
 }

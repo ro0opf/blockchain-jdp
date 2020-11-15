@@ -1,4 +1,4 @@
-package com.ro0opf.blockchain.screen.ui
+package com.ro0opf.blockchain.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ro0opf.blockchain.R
 import com.ro0opf.blockchain.databinding.ActivitySplashBinding
+import com.ro0opf.blockchain.ui.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
     private val SPLASH_TIME_OUT: Long = 1500

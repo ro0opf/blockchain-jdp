@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".screen.ui.SplashActivity">
+            android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screen.ui.LoginActivity"
+            android:name=".ui.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".screen.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
             android:windowSoftInputMode="adjustPan" />
     </application>

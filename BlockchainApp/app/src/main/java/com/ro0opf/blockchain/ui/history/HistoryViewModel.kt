@@ -1,4 +1,4 @@
-package com.ro0opf.blockchain.screen.ui.dashboard
+package com.ro0opf.blockchain.ui.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

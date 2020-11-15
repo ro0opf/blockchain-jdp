@@ -5,10 +5,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class VoteInfo(
-    var userId: Int,
-    var id: Int,
-    val title: String,
-    val body: String
+    val voted_company: String,
+    val voted_amt: Int,
+    val voted_dtm: String,
+    val event_id: String
 ) : Parcelable {
 
 }

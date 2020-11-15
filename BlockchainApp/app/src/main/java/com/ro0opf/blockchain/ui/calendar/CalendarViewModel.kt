@@ -1,4 +1,4 @@
-package com.ro0opf.blockchain.screen.ui.notifications
+package com.ro0opf.blockchain.ui.notifications
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
