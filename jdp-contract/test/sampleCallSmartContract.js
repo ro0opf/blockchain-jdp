@@ -23,7 +23,7 @@ web3.eth.accounts.wallet.add(account);
 web3.eth.defaultAccounts = account.address;
 
 const gasLimit = 6721975;
-const getPrice = 20000000000;
+const gasPrice = 20000000000;
 
 function callTransfer(recipient, amount) {
     return JDPContract.methods
