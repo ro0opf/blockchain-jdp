@@ -61,8 +61,8 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
     }
 
     private fun addDummyData() {
-        schedules.add(Schedule(2020, 11, 1, "혁진아", false, Color.RED))
-        schedules.add(Schedule(2020, 11, 5, "힘내라", false, Color.RED))
+        schedules.add(Schedule(2020, 11, 1, "$$$$", false, Color.RED))
+        schedules.add(Schedule(2020, 11, 5, "####", false, Color.RED))
         schedules.add(Schedule(2020, 11, 5, "@@@@@@@", false, Color.BLUE))
         schedules.add(Schedule(2020, 11, 5, "!!!!!!!!", false, Color.BLACK))
         schedules.add(Schedule(2020, 11, 12, "#########", false, Color.RED))
@@ -74,9 +74,9 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
             val calendarDay =
                 CalendarDay.from(schedule.year, schedule.month, schedule.day)
             if (calendarDayArrayListHashMap.containsKey(calendarDay)) {
-                calendarDayArrayListHashMap.get(calendarDay)!!.add(schedule)
+                calendarDayArrayListHashMap[calendarDay]!!.add(schedule)
             } else {
-                calendarDayArrayListHashMap.put(calendarDay, arrayListOf(schedule))
+                calendarDayArrayListHashMap[calendarDay] = arrayListOf(schedule)
             }
         }
         for ((key, value) in calendarDayArrayListHashMap.entries) {
@@ -97,7 +97,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
             if (selected) String.format("%d월 %d일", date.month, date.day) else ""
         monthlySchedules.clear()
         if (calendarDayArrayListHashMap.containsKey(date)) {
-            calendarDayArrayListHashMap.get(date)?.let { monthlySchedules.addAll(it) }
+            calendarDayArrayListHashMap[date]?.let { monthlySchedules.addAll(it) }
         }
         Log.e("123123", monthlySchedules.toString())
         scheduleAdapter.submitList(monthlySchedules)
