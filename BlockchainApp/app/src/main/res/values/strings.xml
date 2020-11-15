@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Blockchain</string>
+
+    <string name="splash_title">SK\nHYNIX\nJDP</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_history">History</string>
+    <string name="title_account">Account</string>
+</resources>
