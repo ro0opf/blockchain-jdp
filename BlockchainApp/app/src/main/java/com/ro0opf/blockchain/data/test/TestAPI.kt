@@ -1,5 +1,6 @@
 package com.ro0opf.blockchain.data.test
 
+import com.ro0opf.blockchain.data.user.User
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

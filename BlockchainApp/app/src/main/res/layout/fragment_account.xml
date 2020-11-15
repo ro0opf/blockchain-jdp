@@ -29,5 +29,124 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="48dp" />
 
+        <View
+            android:id="@+id/v_balance"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_circle"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/glh_d_48"
+            app:layout_constraintBottom_toTopOf="@id/glh_500"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glh_500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glh_750"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="이름"
+            app:layout_constraintBottom_toBottomOf="@id/v_name"
+            app:layout_constraintStart_toStartOf="@id/v_name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="이름"
+            app:layout_constraintBottom_toBottomOf="@id/v_name"
+            app:layout_constraintEnd_toEndOf="@id/v_name" />
+
+        <View
+            android:id="@+id/v_name"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#343434"
+            app:layout_constraintBottom_toTopOf="@id/v_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/glh_500"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="이메일"
+            app:layout_constraintBottom_toBottomOf="@id/v_email"
+            app:layout_constraintStart_toStartOf="@id/v_email" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="이메일"
+            app:layout_constraintBottom_toBottomOf="@id/v_email"
+            app:layout_constraintEnd_toEndOf="@id/v_email" />
+
+        <View
+            android:id="@+id/v_email"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#343434"
+            app:layout_constraintBottom_toBottomOf="@id/glh_750"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_name"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <Button
+            android:id="@+id/btn_modify"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_account_logout"
+            android:text="편집하기"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/main_color"
+            app:layout_constraintBottom_toTopOf="@id/btn_logout"
+            app:layout_constraintDimensionRatio="1:0.22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/btn_account_logout"
+            android:text="로그아웃"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:0.22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.5" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

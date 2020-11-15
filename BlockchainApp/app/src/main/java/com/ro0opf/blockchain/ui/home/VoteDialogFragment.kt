@@ -16,11 +16,7 @@ class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: DialogVoteBinding
     private val homeViewModel = homeViewModel
-    private var dummy = arrayOf<String?>(
-        "C", "Data structures",
-        "Interview prep", "Algorithms",
-        "DSA with java", "OS"
-    )
+    private val companyNameList = homeViewModel.companyList.value!!.map { company -> company.company }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +33,7 @@ class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
     }
 
     private fun setSpinner() {
-        val ad = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dummy)
+        val ad = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, companyNameList)
 
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spnVote.onItemSelectedListener = this
@@ -58,7 +54,7 @@ class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-        Toast.makeText(requireContext(), dummy[position], Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), companyNameList[position], Toast.LENGTH_LONG).show()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}

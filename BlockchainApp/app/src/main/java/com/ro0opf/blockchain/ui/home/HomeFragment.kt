@@ -10,12 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ro0opf.blockchain.R
+import com.ro0opf.blockchain.common.Current
 import com.ro0opf.blockchain.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
-    private val voteInfoListAdapter = VoteInfoListAdapter()
+    private val companyListAdapter = CompanyListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,13 +25,15 @@ class HomeFragment : Fragment() {
     ): View? {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding.user = Current.user
 
         setVariable()
         setOnClickListner()
-        setVoteInfoRcv(binding.rcvVoteinfo)
+        setCompanyRcv(binding.rcvCompany)
         setObserve()
 
         homeViewModel.getBalance()
+        homeViewModel.getVoting()
 
         return binding.root
     }
@@ -41,13 +44,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setObserve() {
-        homeViewModel.voteInfos.observe(viewLifecycleOwner, {
-            voteInfoListAdapter.submitList(it)
+        homeViewModel.companyList.observe(viewLifecycleOwner, {
+            companyListAdapter.submitList(it)
         })
     }
 
-    private fun setVoteInfoRcv(rcv: RecyclerView) {
-        rcv.adapter = voteInfoListAdapter
+    private fun setCompanyRcv(rcv: RecyclerView) {
+        rcv.adapter = companyListAdapter
         rcv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }

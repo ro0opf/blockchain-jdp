@@ -5,17 +5,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.ro0opf.blockchain.common.Current
 import com.ro0opf.blockchain.data.Repository
-import com.ro0opf.blockchain.data.voteinfo.VoteInfo
+import com.ro0opf.blockchain.data.company.Company
+import com.ro0opf.blockchain.data.vote.Vote
 import kotlinx.coroutines.launch
-import java.util.*
 
 class HomeViewModel : ViewModel() {
     private val repository = Repository()
 
     private val _balance = MutableLiveData(0.0)
-    val balance : LiveData<Double> = _balance
+    val balance: LiveData<Double> = _balance
+
+    private val _voteName = MutableLiveData<String>()
+    val voteName: LiveData<String> = _voteName
+
+    private val _companyList = MutableLiveData<List<Company>>()
+    val companyList: LiveData<List<Company>> = _companyList
 
     fun test() {
         viewModelScope.launch {
@@ -27,23 +34,57 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun getBalance(){
+    fun getVoting() {
         viewModelScope.launch {
-            val response = repository.getBalance(Current.user.user_Id)
+            try {
+                val response = repository.getVoting("20201114", "20201115")
 
-            if(response.isSuccessful){
-                _balance.value = response.body()!!.get("balance").asDouble
+                if (response.isSuccessful) {
+                    val responseBody = response.body()!!
+
+                    val vote = Gson().fromJson(responseBody["voting_detail"], Array<Vote>::class.java)[0]
+                    _voteName.value = vote.event_nm
+                    getCompanyList(vote.event_id)
+                }
+            } catch (e: Exception) {
+                Log.e("123123", e.stackTraceToString())
             }
         }
     }
 
-    private val _voteInfos = MutableLiveData<List<VoteInfo>>().apply {
-        val dummy = ArrayList<VoteInfo>()
-//        dummy.add(VoteInfo(1,2,"awd","321312"))
-//        dummy.add(VoteInfo(1,2,"awd","321312"))
-//        dummy.add(VoteInfo(1,2,"awd","321312"))
-//        dummy.add(VoteInfo(1,2,"awd","321312"))
-        value = dummy
+    fun getCompanyList(eventId: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getCompanyList(eventId)
+
+                if (response.isSuccessful) {
+                    val responseBody = response.body()!!
+
+                    val companyList = Gson().fromJson(responseBody["voting_detail"], Array<Company>::class.java).toList()
+                    _companyList.value = companyList
+                    Log.e("123123", companyList.toString())
+                }
+
+            } catch (e: Exception) {
+                Log.e("123123", e.stackTraceToString())
+            }
+        }
     }
-    val voteInfos: LiveData<List<VoteInfo>> = _voteInfos
+
+    fun getBalance() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getBalance(Current.user.user_Id)
+
+                Log.e("123123", response.toString())
+                if (response.isSuccessful) {
+                    _balance.value = response.body()!!["balance"].asDouble
+                    Current.user.balance = response.body()!!["balance"].asDouble
+                }
+            } catch (e: Exception) {
+                Log.e("123123", e.stackTraceToString())
+            }
+        }
+    }
+
 }

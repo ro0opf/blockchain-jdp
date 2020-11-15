@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="homeViewModel"
             type="com.ro0opf.blockchain.ui.home.HomeViewModel" />
+
+        <variable
+            name="user"
+            type="com.ro0opf.blockchain.data.user.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,45 +41,62 @@
             android:id="@+id/iv_user_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
+            app:layout_constraintBottom_toTopOf="@id/tv_user_name"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/glv_400"
+            app:layout_constraintEnd_toEndOf="@id/glv_500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/glh_d_48"
             app:layout_constraintWidth_percent="0.2"
+            app:setImageCircleSrc="@{user.user_img}"
             tools:background="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@{user.user_name}"
             android:textAlignment="center"
             android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/glh_300"
-            app:layout_constraintEnd_toEndOf="@id/glv_400"
+            app:layout_constraintEnd_toEndOf="@id/glv_500"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_user_image"
             app:layout_constraintWidth_percent="0.2"
             tools:text="조재혁" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glv_400"
+            android:id="@+id/glv_500"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.4" />
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/iv_token"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_token"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/glv_500"
+            app:layout_constraintTop_toBottomOf="@id/glh_d_48"
+            app:layout_constraintWidth_percent="0.2"
+            app:setImageCenterSrc="@{@drawable/ic_token}" />
+
 
         <TextView
+            android:id="@+id/tv_token"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{`ESV TOKEN\n` + homeViewModel.balance.toString()}"
+            android:text="@{homeViewModel.balance.toString() + `$`}"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="32sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/glh_300"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/glv_400"
-            app:layout_constraintTop_toBottomOf="@id/glh_d_48" />
+            app:layout_constraintStart_toStartOf="@id/glv_500"
+            app:layout_constraintTop_toBottomOf="@id/iv_token" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/glh_300"
@@ -90,31 +112,35 @@
             app:layout_constraintTop_toTopOf="@id/glh_300" />
 
         <TextView
-            android:id="@+id/tv_question"
+            android:id="@+id/tv_votename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="다음 중 환경 성과가\n가장 우수한 기업을 투표해주세요."
+            android:text="@{homeViewModel.voteName}"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/glh_300" />
+            app:layout_constraintTop_toBottomOf="@id/glh_300"
+            tools:text="다음 중 환경 성과가\n가장 우수한 기업을 투표해주세요." />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_voteinfo"
+            android:id="@+id/rcv_company"
             android:layout_width="match_parent"
+            android:overScrollMode="never"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/btn_login"
-            app:layout_constraintTop_toBottomOf="@id/tv_question" />
+            app:layout_constraintTop_toBottomOf="@id/tv_votename"
+            tools:listitem="@layout/item_company" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/sub_color"
+            android:background="@drawable/round_corner"
             android:text="투표하기"
+            app:backgroundTint="@color/main_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
