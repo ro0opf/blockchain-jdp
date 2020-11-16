@@ -30,7 +30,7 @@ connection.connect();
 var Web3 = require("web3");
 //var connectUrl = "http://localhost:8545"
 
-const CONTRACT_ADDRESS="0x545f1836F9F768D0a09F3a1073C1A556075aA08B";
+const CONTRACT_ADDRESS="0x394BfB86641Bf8cA8A757a318499A580Cc1f26C6";
 const BESU_CONNECTION_URL= "https://besutest.chainz.network";
 const JDP_ADDRESS="0x45a4176b1EF305666461061c28f04fe7157CE7Fe";
 const JDP_PRIVATE_KEY="89f71e1cdab6bbca7f8d3e7181bfaebd16e5df6a2047403bf2847e8064525318";
@@ -803,6 +803,7 @@ app.get('/vote', (req, res) => {
 	var voted_rslt;
         // 0) Query if event is valid
 	var event_valid_flag = false;
+	var privateKey;
 	var res_json = new Object();
         connection.query('SELECT * FROM vote_list WHERE event_id=\'' + event_id+ '\'', function (err, rows, fields) {
 		if(!err){
@@ -845,7 +846,8 @@ app.get('/vote', (req, res) => {
 			    
 			    acnt_id = rows[0]['eth_id'];
 			    // Call Contract to 'VOTE'
-			  
+			    privateKey = rows[0]['private_key'];
+			    console.log(privateKey);
 		            // 1) Query Balance
 			    var u_balance;
 
@@ -866,9 +868,15 @@ app.get('/vote', (req, res) => {
 				res_json.voted_rslt = "LACK OF BALANCE";
 			   	res.send(res_json);
 			    }
-			    
+
+
 			    // 3) Voting
 			    else {
+				// set account 
+			        var account = web3.eth.accounts.privateKeyToAccount(privateKey);
+     			        web3.eth.accounts.wallet.add(account);
+			        web3.eth.defaultAccounts = account.address;
+			    
 				vote_amt = vote_amt * 10000000000;
 				v_cntrct.methods.voting(event_id, vote_c_id, vote_amt).send(
 					{	from : acnt_id,
@@ -986,90 +994,135 @@ app.get('/reward/find', (req, res) => {
 
 	var u_id = query.id;
 	var event_id = query.event_id;
-
+	var privateKey;
 	var acnt_id = "test_eth_id";
 	
 	// 1) Get reward
-
 	var res_json = new Object();
+
+	var flag= false;
 
 	// 1. GET USER ETH_ID
 	connection.query('SELECT * FROM user_acnt WHERE voter_id=\'' + u_id+ '\'', function (err, rows, fields) {
 		if(!err){
 			if(rows[0] != undefined){
-				console.log('hihihi');
+				
 				acnt_id = rows[0]['eth_id'];
+				privateKey = rows[0]['private_key'];				
 				console.log(acnt_id);
 
 
+			        var account = web3.eth.accounts.privateKeyToAccount(privateKey);
+     			        web3.eth.accounts.wallet.add(account);
+			        web3.eth.defaultAccounts = account.address;
+
+				var bf_balance;
+
+				v_cntrct.methods.balanceOf(acnt_id).call(
+						{
+							from : acnt_id,
+							gas: web3.utils.toHex(gasLimit),
+				    			gasPrice: web3.utils.toHex(gasPrice)
+						}, // Account
+						function(error, result) {
+
+							var res_json = new Object();
+			  				bf_balance = result/10000000000;
+							console.log(bf_balance);
+						}
+				);
+			    	
 				// 2. GET REWARD 
-				// 	Consideration : 1) Voter voted 2 companies at same event  
+				
 				v_cntrct.methods.withdraw(event_id).send({
 						from : acnt_id,
 						gas: web3.utils.toHex(gasLimit),
 				    		gasPrice: web3.utils.toHex(gasPrice),
 				}).then(receipt => {
 					// 3. Voted record query
-
+					console.log("success");
 					console.log(receipt);
 
-					connection.query('SELECT voted_company, sum(voted_amt) voted_amt, voted_rslt, FROM vote_spc WHERE voter_id=\'' + u_id+ '\' AND event_id =\'' + event_id + '\' GROUP BY voted_company', function (ss_err, ss_rows, ss_fields) {
-						if(!ss_err){
-							var vote_info_dtl = new Array();
-							if(ss_rows[0] != undefined){
-								var r_length = ss_rows.length;
-								
-								var max_ser_num = 0;
-								connection.query('SELECT MAX(ser_num) ser_num FROM vote_spc WHERE voter_id=\'' + u_id+ '\'', function (s_err, s_rows, s_fields) {	
-									if(!s_err){
-										if(s_rows[0] != undefined) {
-											max_ser_num = s_rows[0]['ser_num']+1;
-										}
-									}
-								});					
+					flag = true;	
 
+					var vote_info_dtl = new Array();
+					var r_length;
+					connection.query('SELECT voted_company, sum(voted_amt) voted_amt, voted_rslt FROM vote_spc WHERE voter_id=\'' + u_id+ '\' AND event_id =\'' + event_id + '\' GROUP BY voted_company', function (d_err, d_rows, d_fields) {
+						if(!d_err){
+							if(d_rows[0] != undefined){
+								r_length = d_rows.length;
+								// INSERT REWARD DETAIL
+								var sql = 'INSERT INTO reward_spc VALUES(?,?,?,?,?,?,?)';
+								var max_ser_num = 0;
 								for (var i=0; i<r_length; i++){
 									var vote_info = new Object();
 
-									vote_info.company =ss_rows[i]['voted_company'];
-									vote_info.reward_amt = ss_rows[i]['voted_amt'];
-									vote_info.voted_rslt = ss_rows[i]['voted_rslt'];
-									vote_info.event_id = ss_rows[i]['event_id'];
-
+									vote_info.company =d_rows[i]['voted_company'];
+									vote_info.reward_amt = d_rows[i]['voted_amt'];
+									vote_info.voted_rslt = d_rows[i]['voted_rslt'];
+									vote_info.event_id = d_rows[i]['event_id'];
 									vote_info_dtl.push(vote_info) 
-									
-									// INSERT REWARD DETAIL
-									var sql = 'INSERT INTO reward_spc VALUES(?,?,?,?,?,?,?)';
-									var params = [u_id, event_id, max_ser_num, ss_rows[i]['voted_company'], ss_rows[i]['voted_amt'], 'NORMAL', new Date()]
-									connection.query(sql,params,function(sss_err,sss_rows,sss_fields) {
-									  if(sss_err){
-									    console.log(sss_err);
-									  }else{
-									    console.log(sss_rows.insertId);
-									  }
-									});								
 
-									max_ser_num += 1;
+									console.log(sql);
+
+									
+									connection.query('SELECT MAX(ser_num) ser_num FROM vote_spc WHERE voter_id=\'' + u_id+ '\'', function (s_err, s_rows, s_fields) {	
+										if(!s_err){
+											if(s_rows[0] != undefined) {
+												max_ser_num = s_rows[0]['ser_num']+1;
+												max_ser_num += 1;
+												var params = [u_id, event_id, max_ser_num, vote_info.company, vote_info.reward_amt, 'NORMAL', new Date()];
+												connection.query(sql,params,function(sss_err,sss_rows,sss_fields) {
+													  if(sss_err){
+														    console.log(sss_err);
+													  }else{
+														    console.log(sss_rows.insertId);
+													  }
+												});
+
+											}
+										}
+									});	
 
 								}
-								res_json.reward_status = vote_info_dtl;
-								res.send(res_json);
+
+
 							}
-							else{	
-								res_json.reward_find_rslt = vote_info_dtl;
-								res.send(res_json);
-							}
+							res_json.reward_status = vote_info_dtl;
+							res.send(res_json);
+						}
+						else{	
+							console.log(err);
+							res_json.reward_find_rslt = vote_info_dtl;
+							
 						}
 					});
-						
+
+
 				})
 				.catch(error => {
 						console.error(error);
 				});
 
 
+				var after_balance;
 
+				v_cntrct.methods.balanceOf(acnt_id).call(
+						{
+							from : acnt_id,
+							gas: web3.utils.toHex(gasLimit),
+				    			gasPrice: web3.utils.toHex(gasPrice)
+						}, // Account
+						function(error, result) {
 
+							var res_json = new Object();
+			  				after_balance = result/10000000000;
+							console.log(after_balance);
+						}
+				);
+				res_json.reward_find_rslt = "NORMAL";
+				res_json.value = after_balance - bf_balance;
+				
 			}
 			else{
 					
