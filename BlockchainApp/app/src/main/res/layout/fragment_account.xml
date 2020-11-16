@@ -5,6 +5,13 @@
 
     <data>
 
+        <variable
+            name="homeViewModel"
+            type="com.ro0opf.blockchain.ui.home.HomeViewModel" />
+
+        <variable
+            name="user"
+            type="com.ro0opf.blockchain.data.user.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,12 +41,24 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/shape_circle"
+            app:layout_constraintBottom_toTopOf="@id/glh_500"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintWidth_percent="0.5"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/glh_d_48"
-            app:layout_constraintBottom_toTopOf="@id/glh_500"/>
+            app:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{homeViewModel.balance + `$`}"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/v_balance"
+            app:layout_constraintEnd_toEndOf="@id/v_balance"
+            app:layout_constraintStart_toStartOf="@id/v_balance"
+            app:layout_constraintTop_toTopOf="@id/v_balance" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/glh_500"
@@ -70,7 +89,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:text="이름"
+            android:text="@{user.user_name}"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/v_name"
             app:layout_constraintEnd_toEndOf="@id/v_name" />
 
@@ -99,7 +120,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:text="이메일"
+            android:text="@{user.user_Id}"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/v_email"
             app:layout_constraintEnd_toEndOf="@id/v_email" />
 
