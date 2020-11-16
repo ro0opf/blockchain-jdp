@@ -24,6 +24,8 @@ class LoginViewModel : ViewModel() {
 
                 val response = repository.getUser(rootObject)
 
+                Log.e("123123", response.toString())
+                Log.e("123123", response.body().toString())
                 if (response.isSuccessful && response.body()?.eth_id != null) {
                     _isValidLogin.value = response.isSuccessful
                     Current.user = response.body()!!

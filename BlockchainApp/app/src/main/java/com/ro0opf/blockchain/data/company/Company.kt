@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class Company(
     val company: String,
     val user_img : String,
-    val voted_amt: Int,
+    val voted_amt: Double,
     val subject: String,
 ) : Parcelable {
 

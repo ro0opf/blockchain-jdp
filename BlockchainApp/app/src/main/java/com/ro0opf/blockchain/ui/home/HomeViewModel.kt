@@ -21,8 +21,13 @@ class HomeViewModel : ViewModel() {
     private val _voteName = MutableLiveData<String>()
     val voteName: LiveData<String> = _voteName
 
+    private val _eventId = MutableLiveData("")
+    val eventId: LiveData<String> = _eventId
+
     private val _companyList = MutableLiveData<List<Company>>()
     val companyList: LiveData<List<Company>> = _companyList
+
+
 
     fun test() {
         viewModelScope.launch {
@@ -37,13 +42,14 @@ class HomeViewModel : ViewModel() {
     fun getVoting() {
         viewModelScope.launch {
             try {
-                val response = repository.getVoting("20201114", "20201115")
+                val response = repository.getVoting("20201114", "20201228")
 
                 if (response.isSuccessful) {
                     val responseBody = response.body()!!
 
                     val vote = Gson().fromJson(responseBody["voting_detail"], Array<Vote>::class.java)[0]
                     _voteName.value = vote.event_nm
+                    _eventId.value = vote.event_id
                     getCompanyList(vote.event_id)
                 }
             } catch (e: Exception) {
@@ -87,4 +93,19 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun vote(company : String, id : String, eventId: String, voteAmt : Double) {
+        viewModelScope.launch {
+            try{
+                val response = repository.vote(company, id, eventId, voteAmt)
+
+                Log.e("123123", response.toString())
+
+                if(response.isSuccessful) {
+                    Log.e("123123", response.body().toString())
+                }
+            } catch (e : Exception) {
+                Log.e("123123", e.stackTraceToString())
+            }
+        }
+    }
 }
