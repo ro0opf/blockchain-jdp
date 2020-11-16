@@ -55,7 +55,7 @@ class HomeViewModel : ViewModel() {
                     getCompanyList(vote.event_id)
                 }
             } catch (e: Exception) {
-                Log.e("123123", e.stackTraceToString())
+                Loog.e("HomeViewModel.getVoting << ${e.stackTraceToString()}")
             }
         }
     }
@@ -74,7 +74,7 @@ class HomeViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
-                Log.e("123123", e.stackTraceToString())
+                Loog.e("HomeViewModel.getCompanyList << ${e.stackTraceToString()}")
             }
         }
     }
@@ -84,13 +84,13 @@ class HomeViewModel : ViewModel() {
             try {
                 val response = repository.getBalance(Current.user.user_Id)
 
-                Log.e("123123", response.toString())
+                Loog.e("HomeViewModel.getBalance << $response")
                 if (response.isSuccessful) {
                     _balance.value = response.body()!!["balance"].asDouble
                     Current.user.balance = response.body()!!["balance"].asDouble
                 }
             } catch (e: Exception) {
-                Log.e("123123", e.stackTraceToString())
+                Loog.e("HomeViewModel.getBalance << ${e.stackTraceToString()}")
             }
         }
     }

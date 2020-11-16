@@ -24,8 +24,8 @@ class LoginViewModel : ViewModel() {
 
                 val response = repository.getUser(rootObject)
 
-                Loog.e("LoginViewModel.checkValidLogin >> " + response.toString())
-                Loog.e("LoginViewModel.checkValidLogin >> " + response.body().toString())
+                Loog.e("LoginViewModel.checkValidLogin >> $response")
+                Loog.e("LoginViewModel.checkValidLogin >> $response.body().toString()")
 
                 if (response.isSuccessful && response.body()?.eth_id != null) {
                     _isValidLogin.value = response.isSuccessful

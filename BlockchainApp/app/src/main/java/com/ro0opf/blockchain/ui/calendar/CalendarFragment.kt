@@ -2,7 +2,6 @@ package com.ro0opf.blockchain.ui.notifications
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
 import com.ro0opf.blockchain.R
+import com.ro0opf.blockchain.common.Loog
 import com.ro0opf.blockchain.data.schedule.Schedule
 import com.ro0opf.blockchain.databinding.FragmentCalendarBinding
 import com.ro0opf.blockchain.ui.calendar.ScheduleListAdapter
@@ -26,8 +26,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
 
     private lateinit var calendarViewModel: CalendarViewModel
     private lateinit var binding: FragmentCalendarBinding
-    private val decorators: ArrayList<Decorator> = ArrayList<Decorator>()
-    private val schedules: ArrayList<Schedule> = ArrayList<Schedule>()
     private val monthlySchedules: ArrayList<Schedule> = ArrayList<Schedule>()
     private val scheduleAdapter: ScheduleListAdapter = ScheduleListAdapter()
     private val calendarDayArrayListHashMap: HashMap<CalendarDay, ArrayList<Schedule>> =
@@ -44,13 +42,21 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
 
         setCalendarView(binding.calendarView)
         setRecyclerView(binding.rcvSchedule)
+        setObserve()
+        addDummy()
 
         return binding.root
     }
 
+    private fun setObserve() {
+        binding.lifecycleOwner = this
+
+        calendarViewModel.scheduleList.observe(viewLifecycleOwner, {
+            setCalendarDayArrayListHashMap(it)
+        })
+    }
+
     private fun setCalendarView(calendarView: MaterialCalendarView) {
-        addDummyData()
-        calendarView.addDecorators(decorators)
         calendarView.setOnDateChangedListener(this)
         calendarView.setOnMonthChangedListener(this)
     }
@@ -60,16 +66,20 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
         rcv.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun addDummyData() {
-        schedules.add(Schedule(2020, 11, 1, "$$$$", false, Color.RED))
-        schedules.add(Schedule(2020, 11, 5, "####", false, Color.RED))
-        schedules.add(Schedule(2020, 11, 5, "@@@@@@@", false, Color.BLUE))
-        schedules.add(Schedule(2020, 11, 5, "!!!!!!!!", false, Color.BLACK))
-        schedules.add(Schedule(2020, 11, 12, "#########", false, Color.RED))
-        schedules.add(Schedule(2020, 11, 12, "$$$$$$$$", false, Color.BLACK))
-        schedules.add(Schedule(2020, 11, 13, "%%%%%%%%%%%%%", false, Color.GREEN))
-        schedules.add(Schedule(2020, 11, 15, "&&&&&&&&&&&&&", false, Color.BLUE))
-        schedules.add(Schedule(2020, 11, 15, "(((((((((((testset)))))))))))", false, Color.RED))
+    private fun addDummy(){
+        val schedules = ArrayList<Schedule>()
+        val decorators: ArrayList<Decorator> = ArrayList<Decorator>()
+
+        schedules.add(Schedule(2020, 11, 1, "$$$$", false, Color.BLUE))
+        schedules.add(Schedule(2020, 11, 12, "$$$$", false, Color.BLUE))
+        schedules.add(Schedule(2020, 11, 14, "$$$$", false, Color.BLACK))
+        schedules.add(Schedule(2020, 11, 5, "$$$$", false, Color.BLACK))
+        schedules.add(Schedule(2020, 11, 5, "$$$$", false, Color.GREEN))
+        schedules.add(Schedule(2020, 11, 5, "$$$$", false, Color.BLUE))
+        schedules.add(Schedule(2020, 11, 3, "$$$$", false, Color.BLACK))
+        schedules.add(Schedule(2020, 11, 2, "$$$$", false, Color.GREEN))
+        schedules.add(Schedule(2020, 11, 2, "$$$$", false, Color.BLACK))
+
         for (schedule in schedules) {
             val calendarDay =
                 CalendarDay.from(schedule.year, schedule.month, schedule.day)
@@ -86,6 +96,31 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
             }
             decorators.add(Decorator(key, integerArrayList))
         }
+
+        binding.calendarView.addDecorators(decorators)
+    }
+
+    private fun setCalendarDayArrayListHashMap(scheduleList : List<Schedule>) {
+        val decorators: ArrayList<Decorator> = ArrayList<Decorator>()
+
+        for (schedule in scheduleList) {
+            val calendarDay =
+                CalendarDay.from(schedule.year, schedule.month, schedule.day)
+            if (calendarDayArrayListHashMap.containsKey(calendarDay)) {
+                calendarDayArrayListHashMap[calendarDay]!!.add(schedule)
+            } else {
+                calendarDayArrayListHashMap[calendarDay] = arrayListOf(schedule)
+            }
+        }
+        for ((key, value) in calendarDayArrayListHashMap.entries) {
+            val integerArrayList = ArrayList<Int>()
+            for (schedule in value) {
+                integerArrayList.add(schedule.color)
+            }
+            decorators.add(Decorator(key, integerArrayList))
+        }
+
+        binding.calendarView.addDecorators(decorators)
     }
 
     override fun onDateSelected(
@@ -99,12 +134,13 @@ class CalendarFragment : Fragment(), OnDateSelectedListener, OnMonthChangedListe
         if (calendarDayArrayListHashMap.containsKey(date)) {
             calendarDayArrayListHashMap[date]?.let { monthlySchedules.addAll(it) }
         }
-        Log.e("123123", monthlySchedules.toString())
+        Loog.e("CalendarFragment.onDateSelected << $monthlySchedules.toString()")
         scheduleAdapter.submitList(monthlySchedules)
         scheduleAdapter.notifyDataSetChanged()
     }
 
     override fun onMonthChanged(widget: MaterialCalendarView?, date: CalendarDay?) {
-        // TODO :: fetch Month Data 현재 달 -1, +1 schedule data를 db에서 가져와야함
+        Loog.e("CalendarFragment.onMonthChanged << ${date.toString()}")
+        calendarViewModel.fetchScheduleList(date!!)
     }
 }
