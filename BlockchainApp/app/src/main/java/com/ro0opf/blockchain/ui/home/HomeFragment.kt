@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
         binding.user = Current.user
 
         setVariable()
-        setOnClickListner()
+        setOnClickListener()
         setCompanyRcv(binding.rcvCompany)
         setObserve()
 
@@ -55,10 +55,10 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
-    private fun setOnClickListner() {
+    private fun setOnClickListener() {
         binding.btnLogin.setOnClickListener {
             val dialog = VoteDialogFragment(homeViewModel)
-            dialog.show(requireActivity().supportFragmentManager, "awdawd")
+            dialog.show(requireActivity().supportFragmentManager, "voteDialogFragment")
         }
     }
 }

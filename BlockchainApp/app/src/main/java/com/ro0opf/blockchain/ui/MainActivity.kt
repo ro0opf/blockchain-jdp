@@ -29,36 +29,44 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBnvFragment() {
         fragmentManager.beginTransaction().apply {
-            add(R.id.container, historyFragment, getString(R.string.title_history)).hide(historyFragment)
-            add(R.id.container, calendarFragment, getString(R.string.title_calendar)).hide(calendarFragment)
-            add(R.id.container, accountFragment, getString(R.string.title_account)).hide(accountFragment)
+            add(R.id.container, historyFragment, getString(R.string.title_history)).hide(
+                historyFragment
+            )
+            add(R.id.container, calendarFragment, getString(R.string.title_calendar)).hide(
+                calendarFragment
+            )
+            add(R.id.container, accountFragment, getString(R.string.title_account)).hide(
+                accountFragment
+            )
             add(R.id.container, homeFragment, getString(R.string.title_home))
         }.commit()
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_home -> {
-                    fragmentManager.beginTransaction().hide(activeFragment).show(homeFragment).commit()
-                    activeFragment = homeFragment
+                    commitFragment(homeFragment)
                     true
                 }
                 R.id.navigation_history -> {
-                    fragmentManager.beginTransaction().hide(activeFragment).show(historyFragment).commit()
-                    activeFragment = historyFragment
+                    commitFragment(historyFragment)
                     true
                 }
                 R.id.navigation_calendar -> {
-                    fragmentManager.beginTransaction().hide(activeFragment).show(calendarFragment).commit()
-                    activeFragment = calendarFragment
+                    commitFragment(calendarFragment)
                     true
                 }
                 R.id.navigation_account -> {
-                    fragmentManager.beginTransaction().hide(activeFragment).show(accountFragment).commit()
-                    activeFragment = accountFragment
+                    commitFragment(accountFragment)
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun commitFragment(fragment: Fragment) {
+        fragmentManager.beginTransaction().hide(activeFragment).show(fragment).commit()
+        activeFragment = fragment
+        fragment.onResume()
     }
 }

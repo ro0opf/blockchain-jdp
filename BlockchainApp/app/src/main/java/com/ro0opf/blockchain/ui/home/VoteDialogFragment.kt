@@ -23,13 +23,24 @@ class VoteDialogFragment(private val homeViewModel: HomeViewModel) : DialogFragm
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        getDialog()!!.getWindow()?.setBackgroundDrawableResource(R.drawable.round_corner)
+        dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner)
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_vote, container, false)
 
         setOnClickListener()
         setSpinner()
+        setObserve()
 
         return binding.root
+    }
+
+    private fun setObserve() {
+        homeViewModel.isVoteSuccess.observe(viewLifecycleOwner, {
+            if(it){
+                dismiss()
+            }else{
+                Toast.makeText(requireContext(), "Vote error", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     private fun setSpinner() {
@@ -59,7 +70,7 @@ class VoteDialogFragment(private val homeViewModel: HomeViewModel) : DialogFragm
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-        Toast.makeText(requireContext(), companyNameList[position], Toast.LENGTH_LONG).show()
+//        Toast.makeText(requireContext(), companyNameList[position], Toast.LENGTH_LONG).show()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.ro0opf.blockchain.common.Current
+import com.ro0opf.blockchain.common.Loog
 import com.ro0opf.blockchain.data.Repository
 import com.ro0opf.blockchain.data.company.Company
 import com.ro0opf.blockchain.data.vote.Vote
@@ -27,7 +28,8 @@ class HomeViewModel : ViewModel() {
     private val _companyList = MutableLiveData<List<Company>>()
     val companyList: LiveData<List<Company>> = _companyList
 
-
+    private val _isVoteSuccess = MutableLiveData<Boolean>()
+    val isVoteSuccess: LiveData<Boolean> = _isVoteSuccess
 
     fun test() {
         viewModelScope.launch {
@@ -98,13 +100,15 @@ class HomeViewModel : ViewModel() {
             try{
                 val response = repository.vote(company, id, eventId, voteAmt)
 
-                Log.e("123123", response.toString())
+                Loog.e("HomeViewModel.vote >> $response")
 
                 if(response.isSuccessful) {
-                    Log.e("123123", response.body().toString())
+                    Loog.e("HomeViewModel.vote >> $response.body().toString()")
+                    _isVoteSuccess.value = true
                 }
             } catch (e : Exception) {
-                Log.e("123123", e.stackTraceToString())
+                _isVoteSuccess.value = false
+                Log.e("HomeViewModel.vote >> ", e.stackTraceToString())
             }
         }
     }
