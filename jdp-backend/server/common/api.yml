@@ -97,6 +97,238 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /votes/token:
+    post:
+      tags:
+        - votes
+      parameters:
+        - name: recipient
+          in: query
+          description: receiver address
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: query
+          description: token value
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - votes
+      parameters:
+        - name: account
+          in: query
+          description: target address
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /votes/event:
+    post:
+      tags:
+        - votes
+      description: creatEvent
+      requestBody:
+        description: Data analyzed request object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventId:
+                  type: number
+                candidates:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - votes
+      parameters:
+        - name: eventId
+          in: query
+          description: eventId
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /votes/reward:
+    post:
+      tags:
+        - votes
+      parameters:
+        - name: eventId
+          in: query
+          description: eventID
+          required: true
+          schema:
+            type: number
+        - name: amount
+          in: query
+          description: token value
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /votes/state:
+    post:
+      tags:
+        - votes
+      parameters:
+        - name: eventId
+          in: query
+          description: evetId
+          required: true
+          schema:
+            type: number
+        - name: state
+          in: query
+          description: change state 0 OPEN 1 CLOSED 2 SETREFUNDABLE
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - votes
+      parameters:
+        - name: eventId
+          in: query
+          description: eventId
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Return the example with the specified id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+        4XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Example not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /spec:
     get:
       tags:

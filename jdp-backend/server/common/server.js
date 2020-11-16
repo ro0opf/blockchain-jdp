@@ -7,7 +7,7 @@ import * as os from 'os';
 import l from './logger';
 import * as OpenApiValidator from 'express-openapi-validator';
 import errorHandler from '../api/middlewares/error.handler';
-
+import { syncWeb3Network } from './web3';
 import connectDB from './db';
 import cors from 'cors';
 
@@ -45,6 +45,7 @@ export default class ExpressServer {
       })
     );
     connectDB().then();
+    syncWeb3Network().then();
   }
 
   router(routes) {

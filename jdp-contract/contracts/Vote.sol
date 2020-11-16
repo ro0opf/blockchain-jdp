@@ -11,9 +11,9 @@ contract Vote is ERC20 {
         READY, OPEN, CLOSED, REFUNDABLE
     }
     
-    constructor() ERC20("JDP token", "JDP") public {
+    constructor(address _owner) ERC20("JDP token", "JDP") public {
         _setupDecimals(10);
-        initialize();
+        initialize(_owner);
     }
     
     // event struct
@@ -38,8 +38,11 @@ contract Vote is ERC20 {
         _;
     }
     
-    function initialize() internal {
-      owner = msg.sender;
+    function initialize(address _owner) internal {
+      if(_owner == address(0)) owner = msg.sender;
+      else owner = _owner;
+
+      _mint(owner, 1000000 * (10 ** uint256(decimals())));
     }
 
     function setOwner(address _owner) public ownerOnly {

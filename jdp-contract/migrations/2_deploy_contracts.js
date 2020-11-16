@@ -5,5 +5,5 @@ const ERC20 = artifacts.require("ERC20");
 const Vote = artifacts.require("Vote");
 
 module.exports = function(deployer) {
-  deployer.deploy(Vote);
+  deployer.deploy(Vote, '0x45a4176b1EF305666461061c28f04fe7157CE7Fe');
 };

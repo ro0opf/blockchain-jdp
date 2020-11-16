@@ -56,7 +56,7 @@ contract ERC20 is Context, IERC20 {
         _name = name;
         _symbol = symbol;
         _decimals = 18;
-        _balances[_msgSender()] = 10000 * (10 ** uint256(_decimals));
+        _mint(_msgSender(), 10000 * (10 ** uint256(_decimals)));
     }
 
     /**
