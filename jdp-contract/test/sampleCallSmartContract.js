@@ -1,7 +1,7 @@
 'use strict'
 const Web3 = require('web3');
 
-const provider = "https://besutest.chainz.network";
+const provider = "https://besu.chainz.network";
 
 const BESU_CONNECTION_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyJuZXQ6KiIsImV0aDoqIiwiZGVidWc6KiIsInR4cG9vbDoqIiwiZWVhOioiXSwiZXhwIjoxNjA3MTQ4Mjk1LCJ0ZWFtIjoiMTMifQ.xpnw-lQOWzeWWQqKKy-kX-oN3Nsy85gsCmh1UVIjz2FN76m44FEW98WdnOgD-1yb-FyjwsIijvRRj7ugxn6hbN99NWE06aXsht_95-LwvkAwGC0nb4Xc6y6tA7nSB-jtUaQ10Qsvdgh7ymqe2T6SsdaRYiV3Mk077PN80daJIfGqtoD2kiOJZPQ6XNHNECJxgICBxXQNn8x3Yznt4hF0Ms9TrYYWpTHxTlwf8UjDzMnZvyLduN5L_Mnn37r0jIJebVPOHTucIxLpwGD_mN628sbQvPt9_R0Lyzf35JCf1nDB7T1PHSF4lAvSAtJLwvJMUIoz8RKfiHFve_w0ueoG4w";
 function setJwtToken() {
@@ -25,7 +25,8 @@ let web3 = new Web3(new Web3.providers.HttpProvider(provider, setJwtToken()));
 const JDPContractJson = require('../build/contracts/Vote.json');
 const JDPABI = JDPContractJson.abi;
 // get from remix after deploy
-const ContractAddress = '0x545f1836F9F768D0a09F3a1073C1A556075aA08B';
+//const ContractAddress = '0x545f1836F9F768D0a09F3a1073C1A556075aA08B';
+const ContractAddress = '0x394BfB86641Bf8cA8A757a318499A580Cc1f26C6';
 
 const JDPContract = new web3.eth.Contract(JDPABI, ContractAddress);
 
@@ -66,8 +67,7 @@ function getBalance(addr){
     return JDPContract.methods.balanceOf(addr).call();
 }
 
-const addr = "0xCEc484086A370116BD5c6fd98B9C3F252a82dB88"
+const addr = "0xCEc484086A370116BD5c6fd98B9C3F252a82dB88";
 const token = 100;
 callTransfer(addr, token);
-//getBalance(addr).then(result => console.log(result));
-JDPContract.methods.eventList(0).call().then(result => console.log(result));
+getBalance(addr).then(result => {console.log(result)});
