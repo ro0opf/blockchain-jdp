@@ -19,8 +19,8 @@ export class Controller {
   }
 
   async getEventInfo(req) {
-    const { eventId } = req.query;
-    return await ContractService.callEventList(eventId);
+    const { index } = req.query;
+    return await ContractService.callEventList(index);
   }
 
   async sendReward(req) {
