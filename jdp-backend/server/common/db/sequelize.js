@@ -36,7 +36,7 @@ const sequelize = new Sequelize(
 
 const connectSequelize = async () => {
   try {
-    User.initialize(sequelize);
+    //User.initialize(sequelize);
     if (process.env.SEQUELIZE_SYNC_INIT === 'true') {
       if (
         process.env.NODE_ENV === 'production' &&

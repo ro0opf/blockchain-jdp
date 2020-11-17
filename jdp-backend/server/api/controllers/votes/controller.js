@@ -25,7 +25,7 @@ export class Controller {
 
   async sendReward(req) {
     const { eventId, amount } = req.query;
-    return await ContractService.callTransfer(eventId, amount);
+    return await ContractService.callFundReward(eventId, amount);
   }
 
   async changeEventState(req) {

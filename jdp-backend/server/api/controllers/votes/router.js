@@ -8,5 +8,5 @@ export default express
   .post('/event', wrapAsync(controller.createEvent))
   .get('/event', wrapAsync(controller.getEventInfo))
   .post('/reward', wrapAsync(controller.sendReward))
-  .put('/state', wrapAsync(controller.changeEventState))
+  .post('/state', wrapAsync(controller.changeEventState))
   .get('/state', wrapAsync(controller.getEventState));

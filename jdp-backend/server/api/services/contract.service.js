@@ -66,6 +66,24 @@ class ContractService {
     return JDPContract.methods.eventList(eventId).call();
   }
 
+  async callFundReward(eventId, amount) {
+    setWeb3AccountWallet();
+    return JDPContract.methods
+      .fundReward(eventId, amount)
+      .send({
+        from: process.env.JDP_ADDRESS,
+        gas: web3.utils.toHex(process.env.GAS_LIMIT),
+        gasPrice: web3.utils.toHex(process.env.GAS_PRICE),
+      })
+      .then((receipt) => {
+        console.log('receipt ', receipt);
+        return receipt;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
   async callStartVoting(eventId) {
     setWeb3AccountWallet();
     return JDPContract.methods
