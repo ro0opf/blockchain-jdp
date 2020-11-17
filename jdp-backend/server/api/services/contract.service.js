@@ -62,8 +62,8 @@ class ContractService {
       });
   }
 
-  async callEventList(eventId) {
-    return JDPContract.methods.eventList(eventId).call();
+  async callEventList(index) {
+    return JDPContract.methods.eventList(index).call();
   }
 
   async callFundReward(eventId, amount) {

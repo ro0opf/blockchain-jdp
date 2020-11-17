@@ -117,9 +117,9 @@ paths:
       tags:
         - votes
       parameters:
-        - name: eventId
+        - name: index
           in: query
-          description: eventId
+          description: eventList index
           required: true
           schema:
             type: number
