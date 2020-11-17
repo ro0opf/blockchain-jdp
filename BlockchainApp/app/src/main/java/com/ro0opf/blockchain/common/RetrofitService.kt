@@ -11,7 +11,7 @@ object RetrofitService {
 
     private val retrofit =
         Retrofit.Builder()
-            .baseUrl("http://116.123.86.186:9999/")
+            .baseUrl("http://ec2-3-34-159-82.ap-northeast-2.compute.amazonaws.com:9999/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 }
