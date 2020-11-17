@@ -36,6 +36,7 @@ class VoteDialogFragment(private val homeViewModel: HomeViewModel) : DialogFragm
     private fun setObserve() {
         homeViewModel.isVoteSuccess.observe(viewLifecycleOwner, {
             if(it){
+                homeViewModel.getBalance()
                 dismiss()
             }else{
                 Toast.makeText(requireContext(), "Vote error", Toast.LENGTH_LONG).show()

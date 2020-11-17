@@ -48,4 +48,9 @@ class AccountFragment : Fragment() {
             activity?.finish()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.getBalance()
+    }
 }

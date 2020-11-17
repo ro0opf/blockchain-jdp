@@ -61,4 +61,9 @@ class HomeFragment : Fragment() {
             dialog.show(requireActivity().supportFragmentManager, "voteDialogFragment")
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.getBalance()
+    }
 }
