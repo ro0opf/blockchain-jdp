@@ -1,12 +1,12 @@
 package com.ro0opf.blockchain.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.ro0opf.blockchain.common.Current
+import com.ro0opf.blockchain.common.Loog
 import com.ro0opf.blockchain.data.Repository
 import kotlinx.coroutines.launch
 
@@ -24,6 +24,9 @@ class LoginViewModel : ViewModel() {
 
                 val response = repository.getUser(rootObject)
 
+                Loog.e("LoginViewModel.checkValidLogin >> $response")
+                Loog.e("LoginViewModel.checkValidLogin >> $response.body().toString()")
+
                 if (response.isSuccessful && response.body()?.eth_id != null) {
                     _isValidLogin.value = response.isSuccessful
                     Current.user = response.body()!!
@@ -33,7 +36,7 @@ class LoginViewModel : ViewModel() {
                     _isValidLogin.value = false
                 }
             } catch (e : Exception){
-                Log.e("123123", e.stackTraceToString())
+                Loog.e(e.stackTraceToString())
             }
         }
     }

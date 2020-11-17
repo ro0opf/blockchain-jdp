@@ -18,4 +18,5 @@ class Repository{
 
     suspend fun getVoting(stDt : String, endDt : String) = votingClient.getVoting(stDt, endDt)
     suspend fun getCompanyList(eventId : String) = votingClient.getCompanyList(eventId)
+    suspend fun vote(company:String, id:String, eventId: String, voteAmt:Double) = votingClient.vote(company, id, eventId, voteAmt)
 }

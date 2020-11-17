@@ -10,12 +10,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.ro0opf.blockchain.R
+import com.ro0opf.blockchain.common.Current
 import com.ro0opf.blockchain.databinding.DialogVoteBinding
 
-class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
+class VoteDialogFragment(private val homeViewModel: HomeViewModel) : DialogFragment(),
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: DialogVoteBinding
-    private val homeViewModel = homeViewModel
     private val companyNameList = homeViewModel.companyList.value!!.map { company -> company.company }
 
     override fun onCreateView(
@@ -23,13 +23,24 @@ class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        getDialog()!!.getWindow()?.setBackgroundDrawableResource(R.drawable.round_corner)
+        dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner)
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_vote, container, false)
 
         setOnClickListener()
         setSpinner()
+        setObserve()
 
         return binding.root
+    }
+
+    private fun setObserve() {
+        homeViewModel.isVoteSuccess.observe(viewLifecycleOwner, {
+            if(it){
+                dismiss()
+            }else{
+                Toast.makeText(requireContext(), "Vote error", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     private fun setSpinner() {
@@ -42,7 +53,12 @@ class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
 
     private fun setOnClickListener() {
         binding.btnVote.setOnClickListener {
-            homeViewModel.test()
+            homeViewModel.vote(
+                companyNameList[binding.spnVote.selectedItemPosition],
+                Current.user.user_Id,
+                homeViewModel.eventId.value!!,
+                binding.edtToken.text.toString().toDouble()
+            )
         }
     }
 
@@ -54,7 +70,7 @@ class VoteDialogFragment(homeViewModel: HomeViewModel) : DialogFragment(),
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-        Toast.makeText(requireContext(), companyNameList[position], Toast.LENGTH_LONG).show()
+//        Toast.makeText(requireContext(), companyNameList[position], Toast.LENGTH_LONG).show()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}

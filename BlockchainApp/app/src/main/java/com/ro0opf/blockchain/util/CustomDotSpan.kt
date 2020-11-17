@@ -32,7 +32,7 @@ class CustomDotSpan(private val radius: Float, private val colors: List<Int>) : 
                 paint
             )
             paint.color = oldColor
-            leftMost = leftMost + 20
+            leftMost += 20
         }
     }
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="company"
             type="com.ro0opf.blockchain.data.company.Company" />
@@ -13,11 +14,21 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
+
         <ImageView
             android:id="@+id/iv_company_img"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:setImageCenterSrc="@{company.user_img}"
+            app:layout_constraintDimensionRatio="1:0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setImageCenterSrc="@{company.user_img}" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#43EACECE"
             app:layout_constraintDimensionRatio="1:0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{company.company}"
+            android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintTop_toBottomOf="@id/iv_company_img" />
 
@@ -36,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{company.subject}"
+            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/tv_company_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
