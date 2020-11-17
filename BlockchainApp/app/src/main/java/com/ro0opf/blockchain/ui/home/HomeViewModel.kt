@@ -98,12 +98,14 @@ class HomeViewModel : ViewModel() {
     fun vote(company : String, id : String, eventId: String, voteAmt : Double) {
         viewModelScope.launch {
             try{
+                Loog.e("HomeViewModel.vote >> $id, $eventId, $voteAmt")
+
                 val response = repository.vote(company, id, eventId, voteAmt)
 
                 Loog.e("HomeViewModel.vote >> $response")
 
                 if(response.isSuccessful) {
-                    Loog.e("HomeViewModel.vote >> $response.body().toString()")
+                    Loog.e("HomeViewModel.vote >> ${response.body().toString()}")
                     _isVoteSuccess.value = true
                 }
             } catch (e : Exception) {
